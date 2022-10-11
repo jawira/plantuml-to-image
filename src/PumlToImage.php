@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+namespace Jawira\PumlToImage;
+
 use Symfony\Component\Process\Process;
 
 class PumlToImage
@@ -23,6 +25,7 @@ class PumlToImage
    * @var string|null
    */
   protected ?string $executable = null;
+  protected string $format = Format::PNG;
 
   /**
    * Set diagram (the content of .puml file).
@@ -51,15 +54,22 @@ class PumlToImage
     return $this;
   }
 
+  public function setFormat(string $format): self
+  {
+    $this->format = $format;
+
+    return $this;
+  }
+
   /**
    * Create `Process` object, it's up to you to execute and get the image.
    *
    * @return \Symfony\Component\Process\Process
    */
-  public function createProcess(?string $cwd = null): Process
+  public function getProcess(): Process
   {
     $plantUml = $this->findPlantUml();
-    $command = [...$plantUml, ...self::OPTIONS];
+    $command = [...$plantUml, ...self::OPTIONS, $this->format];
 
     $process = new Process($command);
     $process->setInput($this->puml);
