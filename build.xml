@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="jawira/puml-to-image" description="PlantUml wrapper to convert puml diagrams to images"
+         default="help" phingVersion="3">
+
+  <target name="php:lint" description="Check PHP syntax">
+    <phplint haltonfailure="true">
+      <fileset dir="${project.basedir}">
+        <include name="src/**/*.php"/>
+        <include name="tests/**/*.php"/>
+      </fileset>
+    </phplint>
+  </target>
+
+  <target name="help">
+    <uptodate property="uptodate.visualizer" srcfile="build.xml" targetfile="build.svg"/>
+    <runtarget target="map"/>
+    <open path="build.svg"/>
+  </target>
+
+  <target name="map" unless="uptodate.visualizer" description="Create buildfile map">
+    <visualizer format="svg"/>
+  </target>
+
+</project>
