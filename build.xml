@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<project name="jawira/puml-to-image" description="PlantUml wrapper to convert puml diagrams to images" default="help"
+         phingVersion="3">
 
-<project name="jawira/puml-to-image" description="PlantUml wrapper to convert puml diagrams to images"
-         default="help" phingVersion="3">
+
+  <property name="composer.flag" value="--dev"/>
+
+  <target name="setup" depends="composer:install"/>
+  <target name="qa" depends="php:lint,composer:normalize,composer:validate,psalm:run,phpunit:run"/>
+
 
   <target name="php:lint" description="Check PHP syntax">
     <phplint haltonfailure="true">
@@ -22,4 +28,50 @@
     <visualizer format="svg"/>
   </target>
 
+  <target name="psalm:run" description="Check code with Psalm">
+    <exec executable="vendor/bin/psalm" checkreturn="true" passthru="true">
+      <arg line="--no-cache --long-progress"/>
+    </exec>
+  </target>
+
+  <target name="phpunit:run" description="Run unitary tests">
+    <exec executable="vendor/bin/phpunit" checkreturn="true" passthru="true">
+      <env key="XDEBUG_MODE" value="coverage"/>
+    </exec>
+  </target>
+
+  <target name="phpunit:testdox" description="Run unitary tests with testdox">
+    <exec executable="vendor/bin/phpunit" checkreturn="true" passthru="true">
+      <env key="XDEBUG_MODE" value="coverage"/>
+      <arg value="--testdox"/>
+    </exec>
+  </target>
+
+  <target name="composer:install" description="PHP dependencies">
+    <!-- Use &#45;&#45;no-dev for prod -->
+    <composer command="install">
+      <arg value="--no-interaction"/>
+      <arg value="--prefer-dist"/>
+      <arg value="--no-progress"/>
+      <arg value="--ansi"/>
+      <arg value="${composer.flag}"/>
+    </composer>
+  </target>
+
+  <target name="composer:validate" description="Validate composer.json">
+    <composer command="validate">
+      <arg value="--ansi"/>
+      <arg value="--no-interaction"/>
+    </composer>
+  </target>
+
+  <target name="composer:normalize" description="Normalize composer.json">
+    <composer command="normalize">
+      <arg value="--ansi"/>
+      <arg value="--no-interaction"/>
+      <arg value="--diff"/>
+      <arg value="--indent-size=2"/>
+      <arg value="--indent-style=space"/>
+    </composer>
+  </target>
 </project>

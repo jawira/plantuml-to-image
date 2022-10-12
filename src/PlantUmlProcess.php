@@ -1,43 +1,44 @@
 <?php declare(strict_types=1);
 
-namespace Jawira\PumlToImage;
+namespace Jawira\PlantUmlProcess;
 
 use Symfony\Component\Process\Process;
 
-class PumlToImage
+class PlantUmlProcess
 {
-  /** Jar file provided by `jawira/plantuml`. */
-  public const JAR_PATH = 'vendor/jawira/plantuml/bin/plantuml.jar';
-  /** PlantUml options. */
-  protected const OPTIONS = ['-pipe', '-failfast2', '-Djava.awt.headless=true', '-Xmx1024m', '-charset', 'UTF-8'];
   /**
-   * PlantUml diagram to be converted.
-   * @var string|null
+   * Default `jar` provided by `jawira/plantuml`.
    */
-  protected ?string $puml = null;
+  public const JAR_PATH = 'vendor/jawira/plantuml/bin/plantuml.jar';
+
   /**
-   * Jar file provided by user.
+   * Options to be used with plantuml process.
+   */
+  protected const OPTIONS = ['-pipe', '-failfast2', '-Djava.awt.headless=true', '-Xmx1024m', '-charset', 'UTF-8'];
+
+  /**
+   * PlantUml diagram.
+   */
+  protected string $puml;
+
+  /**
+   * Path to `plantuml.jar`.
    * @var string|null
    */
   protected ?string $jar = null;
+
   /**
-   * Executable provided by user.
+   * Path to `plantuml` executable.
    * @var string|null
    */
   protected ?string $executable = null;
-  protected string $format = Format::PNG;
 
   /**
-   * Set diagram (the content of .puml file).
-   *
-   * @param string $puml
-   * @return $this
+   * @param string $puml This is the diagram to be converted, you must provide the diagram itself and not a file path. If you want to convert a file, it's up to you to load that file into a variable.
    */
-  public function setDiagram(string $puml): self
+  public function __construct(string $puml)
   {
     $this->puml = $puml;
-
-    return $this;
   }
 
   public function setJar(string $jar): self
@@ -54,31 +55,25 @@ class PumlToImage
     return $this;
   }
 
-  public function setFormat(string $format): self
-  {
-    $this->format = $format;
-
-    return $this;
-  }
-
   /**
-   * Create `Process` object, it's up to you to execute and get the image.
-   *
-   * @return \Symfony\Component\Process\Process
+   * Convert diagram  into requested format.
+   * @param string $format Must be a valid PlantUml format: `png`, `svg`, `eps`, `txt`, ...
    */
-  public function getProcess(): Process
+  public function convertTo(string $format): string
   {
     $plantUml = $this->findPlantUml();
-    $command = [...$plantUml, ...self::OPTIONS, $this->format];
+    $command = array_merge($plantUml, self::OPTIONS, ["-t$format"]);
 
     $process = new Process($command);
     $process->setInput($this->puml);
+    $process->mustRun();
 
-    return $process;
+    return $process->getOutput();
   }
 
   /**
    * Returns PlantUml Jar or Executable, if not found `plantuml` is returned by default.
+   * @return string[]
    */
   protected function findPlantUml(): array
   {
@@ -92,23 +87,13 @@ class PumlToImage
       return [$this->executable];
     }
 
-    // Jar provided by jawira/plantuml
+    // Find jar provided by jawira/plantuml
     if ($jarInVendor = $this->findJarInVendor()) {
       return ['java', '-jar', $jarInVendor];
     }
 
-    // PlantUml executable
-    if (is_file($plantUml = '/usr/local/bin/plantuml')) {
-      return [$plantUml];
-    }
-
-    // PlantUml executable
-    if (is_file($plantUml = '/usr/bin/plantuml')) {
-      return [$plantUml];
-    }
-
-    // Assuming PlantUml is installed somewhere else
-    return ['plantuml'];
+    // Find executable in system
+    return $this->findExecutable();
   }
 
   /**
@@ -127,5 +112,24 @@ class PumlToImage
     }
 
     return null;
+  }
+
+  /**
+   * @return string[]
+   */
+  protected function findExecutable(): array
+  {
+    // PlantUml executable
+    if (is_file($plantUml = '/usr/local/bin/plantuml')) {
+      return [$plantUml];
+    }
+
+    // PlantUml executable
+    if (is_file($plantUml = '/usr/bin/plantuml')) {
+      return [$plantUml];
+    }
+
+    // Assuming PlantUml is installed somewhere else
+    return ['plantuml'];
   }
 }
