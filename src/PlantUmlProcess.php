@@ -6,51 +6,54 @@ use Symfony\Component\Process\Process;
 
 class PlantUmlProcess
 {
-  /**
-   * Default `jar` provided by `jawira/plantuml`.
-   */
-  public const JAR_PATH = 'vendor/jawira/plantuml/bin/plantuml.jar';
-
-  /**
-   * Options to be used with plantuml process.
-   */
-  protected const OPTIONS = ['-pipe', '-failfast2', '-Djava.awt.headless=true', '-Xmx1024m', '-charset', 'UTF-8'];
+  protected const JAVA_OPTIONS = ['java', '-Djava.net.useSystemProxies=true', '-Djava.awt.headless=true', '-Xmx1024m', '-jar'];
+  protected const PLANTUML_OPTIONS = ['-pipe', '-failfast2', '-charset', 'UTF-8'];
+  protected const PLANTUML_LIMIT_SIZE = '20000';
 
   /**
    * PlantUml diagram.
    */
-  protected string $puml;
+  protected string $diagram;
 
   /**
    * Path to `plantuml.jar`.
+   *
    * @var string|null
    */
   protected ?string $jar = null;
 
   /**
    * Path to `plantuml` executable.
+   *
    * @var string|null
    */
   protected ?string $executable = null;
 
   /**
-   * @param string $puml This is the diagram to be converted, you must provide the diagram itself and not a file path. If you want to convert a file, it's up to you to load that file into a variable.
+   * @param string $diagram This is the diagram to be converted, you must provide the diagram itself and not a file
+   *                        path. Otherwise, it's up to you to load that file into a variable.
    */
-  public function __construct(string $puml)
+  public function __construct(string $diagram)
   {
-    $this->puml = $puml;
+    $this->diagram = $diagram;
   }
 
-  public function setJar(string $jar): self
+  /**
+   * Set Jar file location.
+   */
+  public function setJar(string $path): self
   {
-    $this->jar = $jar;
+    $this->jar = $path;
 
     return $this;
   }
 
-  public function setExecutable(string $executable): self
+  /**
+   * Set executable location.
+   */
+  public function setExecutable(string $path): self
   {
-    $this->executable = $executable;
+    $this->executable = $path;
 
     return $this;
   }
@@ -62,10 +65,11 @@ class PlantUmlProcess
   public function convertTo(string $format): string
   {
     $plantUml = $this->findPlantUml();
-    $command = array_merge($plantUml, self::OPTIONS, ["-t$format"]);
+    $command = array_merge($plantUml, self::PLANTUML_OPTIONS, ["-t$format"]);
+    $PLANTUML_LIMIT_SIZE = getenv('PLANTUML_LIMIT_SIZE') ?: self::PLANTUML_LIMIT_SIZE;
 
-    $process = new Process($command);
-    $process->setInput($this->puml);
+    $process = new Process($command, null, compact('PLANTUML_LIMIT_SIZE'));
+    $process->setInput($this->diagram);
     $process->mustRun();
 
     return $process->getOutput();
@@ -73,63 +77,94 @@ class PlantUmlProcess
 
   /**
    * Returns PlantUml Jar or Executable, if not found `plantuml` is returned by default.
+   *
    * @return string[]
    */
   protected function findPlantUml(): array
   {
-    // Jar provided by user
-    if (is_string($this->jar)) {
-      return ['java', '-jar', $this->jar];
+    // Jar
+    $candidate = $this->findJar();
+    if (is_array($candidate)) {
+      return $candidate;
     }
 
-    // Executable provided by user
-    if (is_string($this->executable)) {
-      return [$this->executable];
+    // Executable
+    $candidate = $this->findExecutable();
+    if (is_array($candidate)) {
+      return $candidate;
     }
 
-    // Find jar provided by jawira/plantuml
-    if ($jarInVendor = $this->findJarInVendor()) {
-      return ['java', '-jar', $jarInVendor];
-    }
-
-    // Find executable in system
-    return $this->findExecutable();
+    return ['plantuml'];
   }
 
   /**
    * Tries to find jar file installed in `vendor` with `jawira/plantuml`.
    *
+   * Jar provided by used has priority and is returned immediately without verification.
+   * Null is returned if jar is not found.
+   *
    * @see https://github.com/jawira/plantuml
+   * @return null|string[]
    */
-  protected function findJarInVendor(): ?string
+  protected function findJar(): ?array
   {
+    $command = self::JAVA_OPTIONS;
+
+    // Jar provided by user
+    if (is_string($this->jar)) {
+      $command[] = $this->jar;
+
+      return $command;
+    }
+
+    // Jar provided by `jawira/plantuml`
     for ($i = 1; $i <= 10; $i++) {
-      $dirname = dirname(__FILE__, $i);
-      $filename = $dirname . DIRECTORY_SEPARATOR . self::JAR_PATH;
-      if (is_file($filename)) {
-        return $filename;
+      $candidate = dirname(__FILE__, $i) . DIRECTORY_SEPARATOR . 'vendor/jawira/plantuml/bin/plantuml.jar';
+      if (is_file($candidate)) {
+        $command[] = $candidate;
+
+        return $command;
       }
+    }
+
+    // Jar when installed using apt-get
+    $candidate = '/usr/share/plantuml/plantuml.jar';
+    if (is_file($candidate)) {
+      $command[] = $candidate;
+
+      return $command;
     }
 
     return null;
   }
 
   /**
-   * @return string[]
+   * Returns PlantUml executable if available.
+   *
+   * Executable provided by used has priority and is returned immediately without verification.
+   * Null is returned if executable is not found.
+   *
+   * @return null|string[]
    */
-  protected function findExecutable(): array
+  protected function findExecutable(): ?array
   {
-    // PlantUml executable
-    if (is_file($plantUml = '/usr/local/bin/plantuml')) {
-      return [$plantUml];
+    // Executable provided by user
+    if (is_string($this->executable)) {
+      return [$this->executable];
     }
 
     // PlantUml executable
-    if (is_file($plantUml = '/usr/bin/plantuml')) {
-      return [$plantUml];
+    $candidate = '/usr/local/bin/plantuml';
+    if (is_file($candidate)) {
+      return [$candidate];
     }
 
-    // Assuming PlantUml is installed somewhere else
-    return ['plantuml'];
+    // PlantUml executable
+    $candidate = '/usr/bin/plantuml';
+    if (is_file($candidate)) {
+      return [$candidate];
+    }
+
+    return null;
   }
 }

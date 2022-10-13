@@ -1,5 +1,6 @@
 <?php declare(strict_types=1);
 
+use Jawira\PlantUmlProcess\Format;
 use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\TestCase;
@@ -16,9 +17,8 @@ class ProcessTest extends TestCase
   {
     $diagram = file_get_contents($filePath);
     $process = new Jawira\PlantUmlProcess\PlantUmlProcess($diagram);
-    $svg = $process->convertTo('svg');
+    $svg = $process->convertTo(Format::SVG);
     $delta = abs($bytes - str_bytes($svg));
-
 
     $this->assertIsXml($svg);
     $this->assertLessThanOrEqual(10, $delta);
@@ -32,6 +32,7 @@ class ProcessTest extends TestCase
       ['resources/puml/colors2.puml', 'Darkorange', 6830],
       ['resources/puml/help.puml', 'There are some other help command:', 3690],
       ['resources/puml/help-themes.puml', 'crt-amber', 11840],
+      ['resources/puml/license.puml', 'PlantUML : a free UML diagram generator', 17090],
       ['resources/puml/listopeniconic.puml', 'useiconic.com', 141770],
       ['resources/puml/listsprite.puml', 'archimatetool.com', 52775],
       ['resources/puml/skinparameters.puml', 'BoundaryStereotypeFontColor', 71740],
@@ -45,15 +46,10 @@ class ProcessTest extends TestCase
     libxml_use_internal_errors(true);
     $simpleXml = simplexml_load_string($xml);
 
-
     static::assertThat(
       $simpleXml,
       new LogicalNot(new IsType(IsType::TYPE_BOOL)),
-      $message
+      $message ?: 'Fail that input string is valid XML'
     );
-
-    if (is_bool($simpleXml)) {
-      throw new Exception('Invalid xml string');
-    }
   }
 }
