@@ -8,3 +8,4 @@
 /phpunit.result.cache
 /resources/report
 /cobertura.xml
+/composer.lock

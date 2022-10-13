@@ -17,13 +17,13 @@
   },
   "require-dev": {
     "ext-libxml": "*",
+    "ext-simplexml": "*",
     "ergebnis/composer-normalize": "^2.28",
     "jawira/plantuml": "^1.2022",
     "jawira/skeleton": "^2.16",
     "jawira/the-lost-functions": "^1.5",
     "phpunit/phpunit": "^9.5",
-    "vimeo/psalm": "^4.29",
-    "ext-simplexml": "*"
+    "vimeo/psalm": "^4.29"
   },
   "autoload": {
     "psr-4": {

@@ -10,9 +10,11 @@ trim_trailing_whitespace = true
 ij_visual_guides = 80, 120
 
 [*.php]
+max_line_length = 120
 ij_php_import_sorting = alphabetic
 ij_php_group_use_wrap = normal
 ij_php_phpdoc_use_fqcn = true
+ij_php_align_inline_comments = true
 ij_php_align_phpdoc_comments = true
 ij_php_align_phpdoc_param_names = true
 ij_php_align_multiline_parameters = true
