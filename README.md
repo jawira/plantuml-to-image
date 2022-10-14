@@ -48,9 +48,9 @@ $ composer require jawira/plantuml-to-image
 
 ## Requirements
 
-This package needs _PlantUml_ (<https://plantuml.com/en/download>) (as an
-executable or as a Jar file), note that _PlantUml_
-has [its own requirements](https://plantuml.com/en/starting).
+This package needs _PlantUml_ (<https://plantuml.com/en/download>) as an
+executable or as a Jar file, note that _PlantUml_
+has its own requirements (<https://plantuml.com/en/starting>).
 
 As an alternative, you can install _PlantUml_ with Composer:
 
