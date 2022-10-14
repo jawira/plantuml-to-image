@@ -6,16 +6,16 @@ use Symfony\Component\Process\Process;
 
 class PlantUml
 {
-  protected const JAVA_OPTIONS = ['java', '-Djava.net.useSystemProxies=true', '-Djava.awt.headless=true', '-Xmx1024m', '-jar'];
+  protected const JAVA_COMMAND = ['java', '-Djava.net.useSystemProxies=true', '-Djava.awt.headless=true', '-Xmx1024m', '-jar'];
   protected const PLANTUML_OPTIONS = ['-pipe', '-failfast2', '-charset', 'UTF-8'];
   protected const PLANTUML_LIMIT_SIZE = '20000';
 
   /**
    * Path to `plantuml.jar`.
    *
-   * @var string|null
+   * @var string
    */
-  protected ?string $jar = null;
+  protected string $jar = '';
 
   /**
    * Set Jar file location.
@@ -49,6 +49,15 @@ class PlantUml
   }
 
   /**
+   * An exception is thrown when PlantUml (jar or executable) can't be found. Use this method to check PlantUml
+   * availability and avoid the exception.
+   */
+  public function isPlantUmlAvailable(): bool
+  {
+    return is_array($this->findJar()) || is_array($this->findExecutable());
+  }
+
+  /**
    * Returns PlantUml Jar or Executable, if not found `plantuml` is returned by default.
    *
    * @return string[]
@@ -56,13 +65,11 @@ class PlantUml
    */
   protected function findPlantUml(): array
   {
-    // Jar
     $candidate = $this->findJar();
     if (is_array($candidate)) {
       return $candidate;
     }
 
-    // Executable
     $candidate = $this->findExecutable();
     if (is_array($candidate)) {
       return $candidate;
@@ -82,10 +89,10 @@ class PlantUml
    */
   protected function findJar(): ?array
   {
-    $command = self::JAVA_OPTIONS;
+    $command = self::JAVA_COMMAND;
 
     // Jar provided by user
-    if (is_string($this->jar)) {
+    if (is_file($this->jar)) {
       $command[] = $this->jar;
 
       return $command;
@@ -123,17 +130,17 @@ class PlantUml
   protected function findExecutable(): ?array
   {
     // PlantUml executable
-    $candidate = '/usr/local/bin/plantuml';
-    if (is_file($candidate)) {
-      return [$candidate];
+    $candidates = [
+      '/usr/local/bin/plantuml',
+      '/usr/bin/plantuml',
+    ];
+    foreach ($candidates as $candidate) {
+      if (is_file($candidate)) {
+        return [$candidate];
+      }
     }
 
-    // PlantUml executable
-    $candidate = '/usr/bin/plantuml';
-    if (is_file($candidate)) {
-      return [$candidate];
-    }
-
+    // Search in path
     if ($this->isPlantUmlInPath()) {
       return ['plantuml'];
     }

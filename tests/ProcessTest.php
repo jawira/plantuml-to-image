@@ -13,7 +13,7 @@ class ProcessTest extends TestCase
    * @covers       \Jawira\PlantUmlToImage\PlantUml::convertTo
    * @covers       \Jawira\PlantUmlToImage\PlantUml::findJar
    * @covers       \Jawira\PlantUmlToImage\PlantUml::findPlantUml
-   * @testdox      Svg from $filePath contains '$needle' .
+   * @testdox      Svg from $filePath contains '$needle'.
    */
   function testSvgConversion($filePath, $needle, $bytes)
   {
