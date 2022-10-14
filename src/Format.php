@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Jawira\PlantUmlProcess;
+namespace Jawira\PlantUmlToImage;
 
 class Format
 {

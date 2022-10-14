@@ -1,6 +1,6 @@
-# jawira/plantuml-process
+# PlantUml to image
 
-**PlantUml wrapper to convert `.puml` diagrams to images.**
+**PlantUml wrapper to convert `.puml` diagrams into images.**
 
 <!--
 BADGES:
@@ -13,68 +13,55 @@ https://shields.io/
 
 ## Usage
 
-It's up to you to load your diagram from disk, then use `PlantUmlProcess` to
-convert the diagram to another format. After conversion, is up to you to save
-new image to disk.
+It's up to you to load your diagram from disk, then
+use `\Jawira\PlantUmlToImage\PlantUml` to convert the diagram to another format.
+After conversion, it's up to you to save new image to disk.
 
 ```php
-use Jawira\PlantUmlProcess\Format;
-use Jawira\PlantUmlProcess\PlantUmlProcess;
+use Jawira\PlantUmlToImage\Format;
+use Jawira\PlantUmlToImage\PlantUml;
 
 // Load diagram
-$puml = file_get_contents('diagram.puml');
+$puml = file_get_contents('./diagram.puml');
 
 // Convert to png
-$plantUmlProcess = new PlantUmlProcess($puml);
-$png = $plantUmlProcess->convertTo(Format::PNG);
+p = new PlantUml();
+$png = $plantUml->convertTo($puml, Format::PNG);
 
 // Save diagram
-file_put_contents('diagram.png', $png);
+file_put_contents('./diagram.png', $png);
 ```
 
-### Other methods
+### Set Jar location
 
-If you downloaded PlantUml as a jar file, you can specify its location:
+Specify the location of `plantuml.jar`:
 
 ```php
-$plantUmlProcess->setJar('/path/to/plantuml.jar');
+$plantUml->setJar('/path/to/plantuml.jar');
 ```
-
-If you installed PlantUml in your system, then PlantUmlProcess should be able to
-locate it automatically. Nevertheless, you can specify its location:
-
-```php
-$plantUmlProcess->setExecutable('/usr/bin/plantuml');
-```
-
-You can install PlantUml
-with [jawira/plantuml](https://packagist.org/packages/jawira/plantuml), it
-should work with `PlantUmlProcess` out of the box without further configuration.
 
 ## How to install
 
-Install _PlantUmlProcess_ with:
-
 ```console
-$ composer require jawira/plantuml-process
+$ composer require jawira/plantuml-to-image
 ```
 
-Optionally:
+## Requirements
+
+This package needs _PlantUml_ (<https://plantuml.com/en/download>) (as an
+executable or as a Jar file), note that _PlantUml_
+has [its own requirements](https://plantuml.com/en/starting).
+
+As an alternative, you can install _PlantUml_ with Composer:
 
 ```console
 $ composer require jawira/plantuml
 ```
 
-## Requirements
-
-This package needs [PlantUml](https://plantuml.com/en/download) (as an
-executable or as a Jar file). PlantUml
-has [its own requirements](https://plantuml.com/en/starting).
-
 ## Contributing
 
 If you liked this project,
-⭐ [star it on GitHub](https://github.com/jawira/plantuml-process).
+⭐ [star it on GitHub](https://github.com/jawira/plantuml-to-image).
 
 ## License
 

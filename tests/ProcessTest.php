@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-use Jawira\PlantUmlProcess\Format;
+use Jawira\PlantUmlToImage\Format;
 use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\TestCase;
@@ -10,14 +10,14 @@ class ProcessTest extends TestCase
 {
   /**
    * @dataProvider svgConversionProvider
-   * @covers       \Jawira\PlantUmlProcess\PlantUmlProcess::convertTo
+   * @covers       \Jawira\PlantUmlToImage\PlantUmlProcess::convertTo
    * @testdox      Svg from $filePath contains '$needle' .
    */
   function testSvgConversion($filePath, $needle, $bytes)
   {
     $diagram = file_get_contents($filePath);
-    $process = new Jawira\PlantUmlProcess\PlantUmlProcess($diagram);
-    $svg = $process->convertTo(Format::SVG);
+    $process = new Jawira\PlantUmlToImage\PlantUml();
+    $svg = $process->convertTo($diagram, Format::SVG);
     $delta = abs($bytes - str_bytes($svg));
 
     $this->assertIsXml($svg);
