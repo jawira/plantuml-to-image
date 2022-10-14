@@ -29,9 +29,11 @@ class PlantUml
 
   /**
    * Convert diagram  into requested format.
+   *
    * @param string $diagram This is the diagram to be converted, you must provide the diagram itself and not a file
    *                        path. Otherwise, it's up to you to load that file into a variable.
    * @param string $format  Must be a valid PlantUml format: `png`, `svg`, `eps`, `txt`, ...
+   * @throws \Jawira\PlantUmlToImage\PlantUmlException
    */
   public function convertTo(string $diagram, string $format): string
   {
@@ -50,6 +52,7 @@ class PlantUml
    * Returns PlantUml Jar or Executable, if not found `plantuml` is returned by default.
    *
    * @return string[]
+   * @throws \Jawira\PlantUmlToImage\PlantUmlException
    */
   protected function findPlantUml(): array
   {
@@ -65,7 +68,7 @@ class PlantUml
       return $candidate;
     }
 
-    return ['plantuml'];
+    throw new PlantUmlException('Cannot found PlantUml, try installing `plantuml/jawira`.');
   }
 
   /**
@@ -131,6 +134,21 @@ class PlantUml
       return [$candidate];
     }
 
+    if ($this->isPlantUmlInPath()) {
+      return ['plantuml'];
+    }
+
     return null;
+  }
+
+  /**
+   * Checks `plantuml` is located as path variable.
+   */
+  protected function isPlantUmlInPath(): bool
+  {
+    $process = Process::fromShellCommandline('plantuml -help');
+    $process->run();
+
+    return 0 === $process->getExitCode();
   }
 }
