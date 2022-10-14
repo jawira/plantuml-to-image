@@ -14,7 +14,8 @@ https://shields.io/
 ## Usage
 
 It's up to you to load your diagram from disk, then
-use `\Jawira\PlantUmlToImage\PlantUml` to convert the diagram to another format.
+use `\Jawira\PlantUmlToImage\PlantUml` to convert the diagram to another
+format.<br>
 After conversion, it's up to you to save new image to disk.
 
 ```php
@@ -38,6 +39,19 @@ Specify the location of `plantuml.jar`:
 
 ```php
 $plantUml->setJar('/path/to/plantuml.jar');
+```
+
+### Check PlantUml availability
+
+An exception is thrown when PlantUml (jar or executable) can't be found. Use
+this method to avoid the exception.
+
+```php
+if ($plantUml->isPlantUmlAvailable()) {
+  echo 'PlantUml is available.', PHP_EOL;
+} else {
+  echo 'Sorry, cannot convert diagram.', PHP_EOL;
+}
 ```
 
 ## How to install
