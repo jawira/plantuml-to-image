@@ -25,7 +25,7 @@ use Jawira\PlantUmlToImage\PlantUml;
 $puml = file_get_contents('./diagram.puml');
 
 // Convert to png
-p = new PlantUml();
+$plantUml = new PlantUml();
 $png = $plantUml->convertTo($puml, Format::PNG);
 
 // Save diagram
