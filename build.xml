@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="jawira/puml-to-image" description="PlantUml wrapper to convert puml diagrams to images" default="help"
-         phingVersion="3">
+<project name="PlantUml to image" default="help" phingVersion="3"
+         description="PlantUml wrapper to convert puml diagrams to images">
 
 
-  <property name="composer.flag" value="--dev"/>
+  <property name="composer.options" value="--dev"/>
+
 
   <target name="setup" depends="composer:install"/>
   <target name="qa" depends="php:lint,composer:normalize,composer:validate,psalm:run,phpunit:run"/>
@@ -54,7 +55,7 @@
       <arg value="--prefer-dist"/>
       <arg value="--no-progress"/>
       <arg value="--ansi"/>
-      <arg value="${composer.flag}"/>
+      <arg value="${composer.options}"/>
     </composer>
   </target>
 

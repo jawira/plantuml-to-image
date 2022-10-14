@@ -13,7 +13,7 @@
   ],
   "require": {
     "php": "^7.4 || ^8.0",
-    "symfony/process": "5.0 || 6.0"
+    "symfony/process": "^5.0 || ^6.0"
   },
   "require-dev": {
     "ext-libxml": "*",
@@ -26,11 +26,11 @@
     "vimeo/psalm": "^4.29"
   },
   "suggest": {
-    "jawira/plantuml": "Install PlantUml (jar and executable) with Composer"
+    "jawira/plantuml": "Provides PlantUml (jar and executable)"
   },
   "autoload": {
     "psr-4": {
-      "Jawira\\PlantUmlProcess\\": "src/"
+      "Jawira\\PlantUmlToImage\\": "src/"
     }
   },
   "config": {

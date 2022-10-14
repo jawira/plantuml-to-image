@@ -1,19 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace Jawira\PlantUmlProcess;
+namespace Jawira\PlantUmlToImage;
 
 use Symfony\Component\Process\Process;
 
-class PlantUmlProcess
+class PlantUml
 {
   protected const JAVA_OPTIONS = ['java', '-Djava.net.useSystemProxies=true', '-Djava.awt.headless=true', '-Xmx1024m', '-jar'];
   protected const PLANTUML_OPTIONS = ['-pipe', '-failfast2', '-charset', 'UTF-8'];
   protected const PLANTUML_LIMIT_SIZE = '20000';
-
-  /**
-   * PlantUml diagram.
-   */
-  protected string $diagram;
 
   /**
    * Path to `plantuml.jar`.
@@ -21,22 +16,6 @@ class PlantUmlProcess
    * @var string|null
    */
   protected ?string $jar = null;
-
-  /**
-   * Path to `plantuml` executable.
-   *
-   * @var string|null
-   */
-  protected ?string $executable = null;
-
-  /**
-   * @param string $diagram This is the diagram to be converted, you must provide the diagram itself and not a file
-   *                        path. Otherwise, it's up to you to load that file into a variable.
-   */
-  public function __construct(string $diagram)
-  {
-    $this->diagram = $diagram;
-  }
 
   /**
    * Set Jar file location.
@@ -49,27 +28,19 @@ class PlantUmlProcess
   }
 
   /**
-   * Set executable location.
-   */
-  public function setExecutable(string $path): self
-  {
-    $this->executable = $path;
-
-    return $this;
-  }
-
-  /**
    * Convert diagram  into requested format.
-   * @param string $format Must be a valid PlantUml format: `png`, `svg`, `eps`, `txt`, ...
+   * @param string $diagram This is the diagram to be converted, you must provide the diagram itself and not a file
+   *                        path. Otherwise, it's up to you to load that file into a variable.
+   * @param string $format  Must be a valid PlantUml format: `png`, `svg`, `eps`, `txt`, ...
    */
-  public function convertTo(string $format): string
+  public function convertTo(string $diagram, string $format): string
   {
     $plantUml = $this->findPlantUml();
     $command = array_merge($plantUml, self::PLANTUML_OPTIONS, ["-t$format"]);
     $PLANTUML_LIMIT_SIZE = getenv('PLANTUML_LIMIT_SIZE') ?: self::PLANTUML_LIMIT_SIZE;
 
     $process = new Process($command, null, compact('PLANTUML_LIMIT_SIZE'));
-    $process->setInput($this->diagram);
+    $process->setInput($diagram);
     $process->mustRun();
 
     return $process->getOutput();
@@ -148,11 +119,6 @@ class PlantUmlProcess
    */
   protected function findExecutable(): ?array
   {
-    // Executable provided by user
-    if (is_string($this->executable)) {
-      return [$this->executable];
-    }
-
     // PlantUml executable
     $candidate = '/usr/local/bin/plantuml';
     if (is_file($candidate)) {
