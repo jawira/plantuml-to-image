@@ -7,13 +7,13 @@
   "type": "library",
   "authors": [
     {
-      "name": "jawira",
+      "name": "Jawira Portugal",
       "email": "dev@tugal.be"
     }
   ],
   "require": {
     "php": "^7.4 || ^8.0",
-    "symfony/process": "5.0"
+    "symfony/process": "5.0 || 6.0"
   },
   "require-dev": {
     "ext-libxml": "*",
@@ -24,6 +24,9 @@
     "jawira/the-lost-functions": "^1.5",
     "phpunit/phpunit": "^9.5",
     "vimeo/psalm": "^4.29"
+  },
+  "suggest": {
+    "jawira/plantuml": "Install PlantUml (jar and executable) with Composer"
   },
   "autoload": {
     "psr-4": {
