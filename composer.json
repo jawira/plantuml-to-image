@@ -1,5 +1,5 @@
 {
-  "name": "jawira/puml-to-image",
+  "name": "jawira/plantuml-to-image",
   "description": "PlantUml wrapper to convert puml diagrams to images.",
   "license": [
     "MIT"
