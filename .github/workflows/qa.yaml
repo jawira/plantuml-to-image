@@ -1,0 +1,42 @@
+name: Quality assurance
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  tests:
+    strategy:
+      matrix:
+        php: [ '7.4','8.0','8.1','8.2' ]
+        composer-flags: [ '--prefer-lowest --no-progress', '--no-progress' ]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 2
+    steps:
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, intl
+          coverage: xdebug
+          tools: composer:v2
+
+      - uses: actions/checkout@v2
+
+      - name: Download phing
+        run: mkdir bin && curl -L -C - -s -S -o bin/phing https://github.com/phingofficial/phing/releases/download/3.0.0-RC3/phing-3.0.0-RC3.phar && chmod +x bin/phing
+
+      - name: Install Composer dependencies
+        run: composer update ${{composer-flag}}
+
+      - name: Lint php files
+        run: bin/phing php:lint
+
+      - name: Validate composer.json
+        run: bin/phing composer:validate
+
+      - name: Analyse project with PhpStan
+        run: bin/phing phpstan:analyse
