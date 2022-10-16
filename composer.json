@@ -13,7 +13,7 @@
   ],
   "require": {
     "php": "^7.4 || ^8.0",
-    "symfony/process": "^5.0 || ^6.0"
+    "symfony/process": "^5.4 || ^6.0"
   },
   "require-dev": {
     "ext-libxml": "*",
@@ -22,7 +22,7 @@
     "jawira/plantuml": "^1.2022",
     "jawira/skeleton": "^2.16",
     "jawira/the-lost-functions": "^1.5",
-    "phpunit/phpunit": "^9.5",
+    "phpunit/phpunit": "^9.5.5",
     "vimeo/psalm": "^4.29"
   },
   "suggest": {
