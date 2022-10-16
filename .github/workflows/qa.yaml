@@ -10,8 +10,8 @@ jobs:
   tests:
     strategy:
       matrix:
-        php: [ '7.4','8.0','8.1','8.2' ]
-        composer-flags: [ '--prefer-lowest --no-progress', '--no-progress' ]
+        php: [ '7.4','8.0','8.1' ]
+        flags: [ '--prefer-lowest --no-interaction', '--no-interaction' ]
     runs-on: ubuntu-22.04
     timeout-minutes: 2
     steps:
@@ -26,11 +26,14 @@ jobs:
 
       - uses: actions/checkout@v2
 
+      - name: Install GraphViz
+        run: sudo apt-get -y install graphviz
+
       - name: Download phing
         run: mkdir bin && curl -L -C - -s -S -o bin/phing https://github.com/phingofficial/phing/releases/download/3.0.0-RC3/phing-3.0.0-RC3.phar && chmod +x bin/phing
 
       - name: Install Composer dependencies
-        run: composer update ${{composer-flag}}
+        run: composer update ${{ matrix.flags }}
 
       - name: Lint php files
         run: bin/phing php:lint
@@ -38,5 +41,8 @@ jobs:
       - name: Validate composer.json
         run: bin/phing composer:validate
 
-      - name: Analyse project with PhpStan
-        run: bin/phing phpstan:analyse
+      - name: Analyse project with PHPUnit
+        run: bin/phing phpunit:run
+
+      - name: Analyse project with Psalm
+        run: bin/phing psalm:run
