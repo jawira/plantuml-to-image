@@ -18,7 +18,7 @@ class PlantUml
   protected string $jar = '';
 
   /**
-   * Set Jar file location.
+   * Set `plantuml.jar` file location.
    */
   public function setJar(string $path): self
   {
