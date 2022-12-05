@@ -13,10 +13,17 @@ https://shields.io/
 
 ## Usage
 
+This package provides three methods:
+
+1. `\Jawira\PlantUmlToImage\PlantUml::convertTo`
+2. `\Jawira\PlantUmlToImage\PlantUml::setJar`
+3. `\Jawira\PlantUmlToImage\PlantUml::isPlantUmlAvailable`
+
+### Convert .puml diagram to image
+
 It's up to you to load your diagram from disk, then
-use `\Jawira\PlantUmlToImage\PlantUml` to convert the diagram to another
-format.<br>
-After conversion, it's up to you to save new image to disk.
+use `\Jawira\PlantUmlToImage\PlantUml` to convert the diagram to another format,
+after conversion, it's up to you to save new image to disk:
 
 ```php
 use Jawira\PlantUmlToImage\Format;
@@ -41,10 +48,19 @@ Specify the location of `plantuml.jar`:
 $plantUml->setJar('/path/to/plantuml.jar');
 ```
 
+You don't need to set Jar location in the following cases:
+
+1. You have downloaded PlantUML
+   with [jawira/plantuml](https://github.com/jawira/plantuml)
+   , (location `vendor/jawira/plantuml/bin/plantuml.jar`).
+2. If you have installed PlantUML with apt-get
+   (location `/usr/share/plantuml/plantuml.jar`).
+3. Or if you have `plantuml` command installed.
+
 ### Check PlantUml availability
 
-An exception is thrown when PlantUml (jar or executable) can't be found. Use
-this method to avoid the exception.
+An exception is thrown when jar can't be found, use this method to avoid the
+exception.
 
 ```php
 if ($plantUml->isPlantUmlAvailable()) {
