@@ -2,14 +2,10 @@
 
 **PlantUml wrapper to convert `.puml` diagrams into images.**
 
-<!--
-BADGES:
-https://poser.pugx.org/
-https://phppackages.org/p/jawira/case-converter
-https://isitmaintained.com/
-http://hits.dwyl.io/
-https://shields.io/
--->
+[![Latest Stable Version](http://poser.pugx.org/jawira/plantuml-to-image/v)](https://packagist.org/packages/jawira/plantuml-to-image)
+[![Total Downloads](http://poser.pugx.org/jawira/plantuml-to-image/downloads)](https://packagist.org/packages/jawira/plantuml-to-image)
+[![PHP Version Require](http://poser.pugx.org/jawira/plantuml-to-image/require/php)](https://packagist.org/packages/jawira/plantuml-to-image)
+[![License](http://poser.pugx.org/jawira/plantuml-to-image/license)](https://packagist.org/packages/jawira/plantuml-to-image)
 
 ## Usage
 
