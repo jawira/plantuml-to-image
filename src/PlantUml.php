@@ -12,8 +12,6 @@ class PlantUml
 
   /**
    * Path to `plantuml.jar`.
-   *
-   * @var string
    */
   protected string $jar = '';
 
@@ -49,8 +47,9 @@ class PlantUml
   }
 
   /**
-   * An exception is thrown when PlantUml (jar or executable) can't be found. Use this method to check PlantUml
-   * availability and avoid the exception.
+   * Use this method to check PlantUml availability and avoid the exception.
+   *
+   * An exception is thrown when PlantUml (jar or executable) can't be found.
    */
   public function isPlantUmlAvailable(): bool
   {
