@@ -32,16 +32,16 @@ class ProcessTest extends TestCase
   function svgConversionProvider(): array
   {
     return [
-      ['resources/puml/colors.puml', 'BUSINESS', 40620],
-      ['resources/puml/colors2.puml', 'Darkorange', 6830],
-      ['resources/puml/help.puml', 'There are some other help command:', 3690],
-      ['resources/puml/help-themes.puml', 'crt-amber', 11631],
-      ['resources/puml/license.puml', 'PlantUML : a free UML diagram generator', 17010],
-      ['resources/puml/listopeniconic.puml', 'useiconic.com', 141770],
-      ['resources/puml/listsprite.puml', 'archimatetool.com', 52775],
-      ['resources/puml/skinparameters.puml', 'BoundaryStereotypeFontColor', 71740],
-      ['resources/puml/stdlib.puml', 'kubernetes', 12400],
-      ['resources/puml/version.puml', 'Installation seems OK.', 5920],
+      ['resources/puml/colors.puml', 'BUSINESS', 40_000],
+      ['resources/puml/colors2.puml', 'Darkorange', 6_500],
+      ['resources/puml/help-types.puml', 'The possible types are', 3_690],
+      ['resources/puml/help-themes.puml', 'crt-amber', 11_300],
+      ['resources/puml/license.puml', 'PlantUML : a free UML diagram generator', 13_000],
+      ['resources/puml/listopeniconic.puml', 'useiconic.com', 141_500],
+      ['resources/puml/listsprite.puml', 'archimatetool.com', 49_000],
+      ['resources/puml/skinparameters.puml', 'BoundaryStereotypeFontColor', 71_500],
+      ['resources/puml/stdlib.puml', 'kubernetes', 12_400],
+      ['resources/puml/version.puml', 'Installation seems OK.', 5_500],
     ];
   }
 

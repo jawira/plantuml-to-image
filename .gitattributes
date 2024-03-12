@@ -1,18 +1,25 @@
-/.github			export-ignore
-/resources			export-ignore
-/tests				export-ignore
-
 /.editorconfig		export-ignore
 /.gitattributes		export-ignore
+/.github			export-ignore
 /.gitignore			export-ignore
-/build.svg			export-ignore
-/build.xml			export-ignore
+/.idea				export-ignore
+/.phive				export-ignore
+/.psalm				export-ignore
+/CHANGELOG.md		export-ignore
+/README.md			export-ignore
+/build				export-ignore
+/build.png			export-ignore
+/docs				export-ignore
+/examples			export-ignore
+/phpstan			export-ignore
 /phpunit.xml		export-ignore
-/psalm.xml			export-ignore
+/phpunit.xml.dist	export-ignore
+/tests				export-ignore
 
 *.php	text	eol=lf	diff=php
+*.js	text	eol=lf
 *.svg	text	eol=lf
-*.xml	text	eol=lf
+*.bat	text	eol=crlf
 *.phar	binary
 *.png	binary
 *.jpg	binary
