@@ -74,7 +74,7 @@ class PlantUml
       return $candidate;
     }
 
-    throw new PlantUmlException('Cannot found PlantUml, try installing `plantuml/jawira`.');
+    throw new PlantUmlException('PlantUml not found, try installing "jawira/plantuml".');
   }
 
   /**
