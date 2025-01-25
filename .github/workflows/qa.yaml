@@ -36,14 +36,5 @@ jobs:
           composer update ${{ matrix.flags }}
           phing composer:install
 
-      - name: Lint php files
-        run: phing php:lint
-
-      - name: Validate composer.json
-        run: phing composer:validate
-
-      - name: Analyse project with PHPUnit
-        run: phing phpunit:run
-
-      - name: Analyse project with Psalm
-        run: phing psalm:run
+      - name: Quality Assurance
+        run: phing php:lint composer:validate psalm:run cs:check phpunit:run
