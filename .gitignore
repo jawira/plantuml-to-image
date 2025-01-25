@@ -9,3 +9,5 @@
 /resources/report
 /cobertura.xml
 /composer.lock
+/.php-cs-fixer.php
+/.php-cs-fixer.cache

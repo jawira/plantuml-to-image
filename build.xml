@@ -7,7 +7,7 @@
 
 
   <target name="setup" depends="composer:install"/>
-  <target name="qa" depends="php:lint,composer:normalize,composer:validate,psalm:run,phpunit:run"/>
+  <target name="qa" depends="php:lint,composer:normalize,composer:validate,psalm:run,cs:check,phpunit:run"/>
 
 
   <target name="php:lint" description="Check PHP syntax">
@@ -71,5 +71,21 @@
       <arg value="--indent-size=2"/>
       <arg value="--indent-style=space"/>
     </composer>
+  </target>
+
+  <target name="cs:fix" description="Fixes code style in src dir.">
+    <exec executable="vendor/bin/php-cs-fixer" passthru="true" checkreturn="true">
+      <arg line="--ansi --no-interaction --allow-risky=yes --verbose"/>
+      <arg value="fix"/>
+      <arg file="src"/>
+    </exec>
+  </target>
+
+  <target name="cs:check" description="Checks if configured files/directories comply with configured rules.">
+    <exec executable="vendor/bin/php-cs-fixer" passthru="true" checkreturn="true">
+      <arg line="--ansi --no-interaction --allow-risky=yes --verbose"/>
+      <arg value="check"/>
+      <arg file="src"/>
+    </exec>
   </target>
 </project>
