@@ -3,7 +3,11 @@
 namespace Jawira\PlantUmlToImage;
 
 use Symfony\Component\Process\Process;
+use function array_merge;
 use function getenv;
+use function is_array;
+use function is_file;
+use function trim;
 
 class PlantUml
 {
@@ -42,7 +46,7 @@ class PlantUml
     $PLANTUML_LIMIT_SIZE = getenv('PLANTUML_LIMIT_SIZE') ?: self::PLANTUML_LIMIT_SIZE;
 
     $process = new Process($command, null, compact('PLANTUML_LIMIT_SIZE'));
-    $process->setInput($diagram);
+    $process->setInput(trim($diagram));
     $process->mustRun();
 
     return $process->getOutput();
