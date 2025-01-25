@@ -3,7 +3,7 @@
          description="PlantUml wrapper to convert puml diagrams to images">
 
 
-  <property name="composer.options" value="--dev"/>
+  <property name="composer.options" value="--ansi"/>
 
 
   <target name="setup" depends="composer:install"/>
@@ -51,11 +51,8 @@
   <target name="composer:install" description="PHP dependencies">
     <!-- Use &#45;&#45;no-dev for prod -->
     <composer command="install">
-      <arg value="--no-interaction"/>
-      <arg value="--prefer-dist"/>
-      <arg value="--no-progress"/>
-      <arg value="--ansi"/>
-      <arg value="${composer.options}"/>
+      <arg line="--no-interaction --prefer-dist --no-progress --ansi"/>
+      <arg line="${composer.options}"/>
     </composer>
   </target>
 

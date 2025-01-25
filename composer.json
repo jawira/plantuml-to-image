@@ -23,7 +23,7 @@
     "jawira/skeleton": "^2.16",
     "jawira/the-lost-functions": "^1.5.0",
     "phpunit/phpunit": "^9.6.17",
-    "vimeo/psalm": "^4.30.0"
+    "vimeo/psalm": "^5.26.1"
   },
   "suggest": {
     "jawira/plantuml": "Provides PlantUml (jar and executable)"

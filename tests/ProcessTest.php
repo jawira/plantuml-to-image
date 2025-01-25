@@ -35,7 +35,7 @@ class ProcessTest extends TestCase
       ['resources/puml/colors.puml', 'BUSINESS', 40_000],
       ['resources/puml/colors2.puml', 'Darkorange', 6_500],
       ['resources/puml/help-types.puml', 'The possible types are', 3_690],
-      ['resources/puml/help-themes.puml', 'crt-amber', 11_300],
+      ['resources/puml/help-themes.puml', 'crt-amber', 9_700],
       ['resources/puml/license.puml', 'PlantUML : a free UML diagram generator', 13_000],
       ['resources/puml/listopeniconic.puml', 'useiconic.com', 141_500],
       ['resources/puml/listsprite.puml', 'archimatetool.com', 49_000],
