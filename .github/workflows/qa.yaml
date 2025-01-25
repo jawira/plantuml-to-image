@@ -10,9 +10,9 @@ jobs:
   tests:
     strategy:
       matrix:
-        php: [ '7.4','8.0','8.1','8.2','8.3' ]
+        php: [ '7.4','8.0','8.1','8.2','8.3','8.4' ]
         flags: [ '--prefer-lowest --no-interaction', '--no-interaction' ]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 2
     steps:
 
@@ -22,27 +22,28 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: mbstring, intl
           coverage: xdebug
-          tools: composer:v2
+          tools: phing:v3
+
+      - name: Install GraphViz (PlantUML requirement)
+        run: |
+          sudo apt --yes update
+          sudo apt --yes install graphviz
 
       - uses: actions/checkout@v2
 
-      - name: Install GraphViz
-        run: sudo apt-get -y install graphviz
-
-      - name: Download phing
-        run: mkdir bin && curl -L -C - -s -S -o bin/phing https://github.com/phingofficial/phing/releases/download/3.0.0-rc6/phing-3.0.0-RC6.phar && chmod +x bin/phing
-
       - name: Install Composer dependencies
-        run: composer update ${{ matrix.flags }}
+        run: |
+          composer update ${{ matrix.flags }}
+          phing composer:install
 
       - name: Lint php files
-        run: bin/phing php:lint
+        run: phing php:lint
 
       - name: Validate composer.json
-        run: bin/phing composer:validate
+        run: phing composer:validate
 
       - name: Analyse project with PHPUnit
-        run: bin/phing phpunit:run
+        run: phing phpunit:run
 
       - name: Analyse project with Psalm
-        run: bin/phing psalm:run
+        run: phing psalm:run
