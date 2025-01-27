@@ -37,7 +37,10 @@ jobs:
           phing composer:install
 
       - name: Quality Assurance
-        run: phing php:lint composer:validate cs:check phpunit:run
+        run: phing php:lint composer:validate phpunit:run
 
       - name: Psalm
         run: psalm src
+
+      - name: Code Style
+        run: PHP_CS_FIXER_IGNORE_ENV=yes phing cs:check
