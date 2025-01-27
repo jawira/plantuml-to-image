@@ -22,7 +22,7 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: mbstring, intl
           coverage: xdebug
-          tools: phing:v3, psalm:v6
+          tools: phing:v3, psalm:v6, phpunit:v9
 
       - name: Install GraphViz (PlantUML requirement)
         run: |
@@ -36,8 +36,11 @@ jobs:
           composer update ${{ matrix.flags }}
           phing composer:install
 
-      - name: Quality Assurance
-        run: phing php:lint composer:validate phpunit:run
+      - name: Lint
+        run: phing php:lint composer:validate
+
+      - name: PHPUnit
+        run: XDEBUG_MODE=coverage phpunit
 
       - name: Psalm
         run: psalm src
