@@ -7,7 +7,7 @@
 
 
   <target name="setup" depends="composer:install"/>
-  <target name="qa" depends="php:lint,composer:normalize,composer:validate,psalm:run,cs:check,phpunit:run"/>
+  <target name="qa" depends="php:lint,composer:validate,psalm:run,cs:check,phpunit:run"/>
 
 
   <target name="php:lint" description="Check PHP syntax">
@@ -60,16 +60,6 @@
     <composer command="validate">
       <arg value="--ansi"/>
       <arg value="--no-interaction"/>
-    </composer>
-  </target>
-
-  <target name="composer:normalize" description="Normalize composer.json">
-    <composer command="normalize">
-      <arg value="--ansi"/>
-      <arg value="--no-interaction"/>
-      <arg value="--diff"/>
-      <arg value="--indent-size=2"/>
-      <arg value="--indent-style=space"/>
     </composer>
   </target>
 
