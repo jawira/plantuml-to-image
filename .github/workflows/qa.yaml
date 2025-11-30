@@ -21,7 +21,7 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: mbstring, intl
           coverage: xdebug
-          tools: phing:v3, psalm:v6, phpunit:v9
+          tools: phing:v3, phpunit:v10
 
       - name: Install GraphViz (PlantUML requirement)
         run: |
@@ -40,7 +40,7 @@ jobs:
         run: XDEBUG_MODE=coverage phpunit
 
       - name: Psalm
-        run: php -d opcache.jit=0 $(which psalm) src
+        run: phing psalm:run
 
       - name: Code Style
         run: PHP_CS_FIXER_IGNORE_ENV=yes phing cs:check
