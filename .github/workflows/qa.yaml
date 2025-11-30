@@ -43,7 +43,7 @@ jobs:
         run: XDEBUG_MODE=coverage phpunit
 
       - name: Psalm
-        run: psalm src
+        run: php -d opcache.jit=0 $(which psalm) src
 
       - name: Code Style
         run: PHP_CS_FIXER_IGNORE_ENV=yes phing cs:check
