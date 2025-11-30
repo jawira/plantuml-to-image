@@ -10,8 +10,7 @@ jobs:
   tests:
     strategy:
       matrix:
-        php: [ '8.1','8.2','8.3','8.4' ]
-        flags: [ '--prefer-lowest --no-interaction', '--no-interaction' ]
+        php: [ '8.2','8.3','8.4' ]
     runs-on: ubuntu-24.04
     timeout-minutes: 2
     steps:
@@ -32,9 +31,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install Composer dependencies
-        run: |
-          composer update ${{ matrix.flags }}
-          phing composer:install
+        run: phing composer:install
 
       - name: Lint
         run: phing php:lint composer:validate
