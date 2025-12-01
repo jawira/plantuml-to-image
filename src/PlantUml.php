@@ -4,6 +4,8 @@ namespace Jawira\PlantUmlToImage;
 
 use Symfony\Component\Process\Process;
 use function array_merge;
+use function compact;
+use function dirname;
 use function getenv;
 use function is_array;
 use function is_file;
@@ -33,8 +35,10 @@ class PlantUml
   /**
    * Convert diagram  into requested format.
    *
-   * @param string $diagram This is the diagram to be converted, you must provide the diagram itself and not a file
-   *                        path. Otherwise, it's up to you to load that file into a variable.
+   * @param string $diagram This is the diagram to be converted, you must
+   *                        provide the diagram itself and not a file path.
+   *                        Otherwise, it's up to you to load that file into
+   *                        a variable.
    * @param string $format  Must be a valid PlantUml format: `png`, `svg`, `eps`, `txt`, ...
    * @throws \Jawira\PlantUmlToImage\PlantUmlException
    */
@@ -86,8 +90,8 @@ class PlantUml
   /**
    * Tries to find jar file installed in `vendor` with `jawira/plantuml`.
    *
-   * Jar provided by used has priority and is returned immediately without verification.
-   * Null is returned if jar is not found.
+   * Jar provided by used has priority and is returned immediately without
+   * verification. `null` is returned if jar is not found.
    *
    * @see https://github.com/jawira/plantuml
    * @return null|string[]
@@ -127,8 +131,8 @@ class PlantUml
   /**
    * Returns PlantUml executable if available.
    *
-   * Executable provided by used has priority and is returned immediately without verification.
-   * Null is returned if executable is not found.
+   * Executable provided by used has priority and is returned immediately
+   * without verification.`null` is returned if executable is not found.
    *
    * @return null|string[]
    */
