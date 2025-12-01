@@ -1,23 +1,24 @@
 <?php declare(strict_types=1);
 
 use Jawira\PlantUmlToImage\Format;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\TestCase;
 use function Jawira\TheLostFunctions\str_bytes;
 
+#[CoversClass(\Jawira\PlantUmlToImage\PlantUml::class)]
 class ProcessTest extends TestCase
 {
   const MANTISSA = 100;
 
   /**
    * @dataProvider svgConversionProvider
-   * @covers       \Jawira\PlantUmlToImage\PlantUml::convertTo
-   * @covers       \Jawira\PlantUmlToImage\PlantUml::findJar
-   * @covers       \Jawira\PlantUmlToImage\PlantUml::findPlantUml
    * @testdox      Svg from $filePath contains '$needle'.
    */
-  function testSvgConversion($filePath, $needle, $size)
+  #[DataProvider('svgConversionProvider')]
+  public function testSvgConversion($filePath, $needle, $size)
   {
     $diagram = file_get_contents($filePath);
     $process = new Jawira\PlantUmlToImage\PlantUml();
@@ -29,7 +30,7 @@ class ProcessTest extends TestCase
     $this->assertStringContainsString($needle, $svg);
   }
 
-  function svgConversionProvider(): array
+  public static function svgConversionProvider(): array
   {
     return [
       ['resources/puml/colors.puml', 'BUSINESS', 40_000],
@@ -45,7 +46,7 @@ class ProcessTest extends TestCase
     ];
   }
 
-  function assertIsXml(string $xml, $message = '')
+  private function assertIsXml(string $xml)
   {
     libxml_use_internal_errors(true);
     $simpleXml = simplexml_load_string($xml);
@@ -53,7 +54,7 @@ class ProcessTest extends TestCase
     static::assertThat(
       $simpleXml,
       new LogicalNot(new IsType(IsType::TYPE_BOOL)),
-      $message ?: 'Fail that input string is valid XML'
+      'Fail that input string is valid XML'
     );
   }
 }

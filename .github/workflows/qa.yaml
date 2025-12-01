@@ -11,6 +11,7 @@ jobs:
     strategy:
       matrix:
         php: [ '8.2','8.3','8.4' ]
+        flags: [ '--prefer-lowest --no-interaction', '--no-interaction' ]
     runs-on: ubuntu-24.04
     timeout-minutes: 2
     steps:
@@ -21,7 +22,7 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: mbstring, intl
           coverage: xdebug
-          tools: phing:v3, phpunit:v10
+          tools: phing:v3
 
       - name: Install GraphViz (PlantUML requirement)
         run: |
@@ -31,16 +32,18 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Install Composer dependencies
-        run: phing composer:install
+        run: |
+          composer update ${{ matrix.flags }}
+          phing composer:install
 
       - name: Lint
         run: phing php:lint composer:validate
 
       - name: PHPUnit
-        run: XDEBUG_MODE=coverage phpunit
+        run: phing phpunit:testdox
 
       - name: Psalm
         run: phing psalm:run
 
       - name: Code Style
-        run: PHP_CS_FIXER_IGNORE_ENV=yes phing cs:check
+        run: phing cs:check
