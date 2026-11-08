@@ -33,14 +33,14 @@ class ProcessTest extends TestCase
   public static function svgConversionProvider(): array
   {
     return [
-      ['resources/puml/colors.puml', 'BUSINESS', 40_000],
-      ['resources/puml/colors2.puml', 'Darkorange', 6_500],
+      ['resources/puml/colors.puml', 'BUSINESS', 32_000],
+      ['resources/puml/colors2.puml', 'Darkorange', 6_200],
       ['resources/puml/help-types.puml', 'The possible types are', 3_690],
-      ['resources/puml/help-themes.puml', 'crt-amber', 9_700],
+      ['resources/puml/help-themes.puml', 'crt-amber', 8_300],
       ['resources/puml/license.puml', 'PlantUML : a free UML diagram generator', 13_000],
-      ['resources/puml/listopeniconic.puml', 'useiconic.com', 141_500],
+      ['resources/puml/listopeniconic.puml', 'useiconic.com', 129_500],
       ['resources/puml/listsprite.puml', 'archimatetool.com', 49_000],
-      ['resources/puml/skinparameters.puml', 'BoundaryStereotypeFontColor', 71_500],
+      ['resources/puml/skinparameters.puml', 'BoundaryStereotypeFontColor', 49_000],
       ['resources/puml/stdlib.puml', 'kubernetes', 12_400],
       ['resources/puml/version.puml', 'Installation seems OK.', 5_500],
     ];
