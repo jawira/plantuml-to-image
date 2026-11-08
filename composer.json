@@ -13,12 +13,13 @@
   ],
   "require": {
     "php": "^8.2",
-    "symfony/process": "^7.0 || ^8.0"
+    "symfony/process": "^7 || ^8"
   },
   "require-dev": {
     "ext-libxml": "*",
     "ext-simplexml": "*",
     "friendsofphp/php-cs-fixer": "^3.95.29",
+    "jawira/annotation-updater": "^1.1",
     "jawira/plantuml": "^1.2026.9",
     "jawira/skeleton": "^2.33",
     "jawira/the-lost-functions": "^1.8.0",
