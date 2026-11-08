@@ -3,6 +3,7 @@
 namespace Jawira\PlantUmlToImage;
 
 use Symfony\Component\Process\Process;
+
 use function array_merge;
 use function compact;
 use function dirname;
@@ -11,6 +12,10 @@ use function is_array;
 use function is_file;
 use function trim;
 
+/**
+ * @author Jawira Portugal <dev@tugal.be>
+ * @copyright © 2022-2026 Jawira Portugal
+ */
 class PlantUml
 {
   protected const JAVA_COMMAND = ['java', '-Djava.net.useSystemProxies=true', '-Djava.awt.headless=true', '-Xmx1024m', '-jar'];
@@ -40,12 +45,12 @@ class PlantUml
    *                        Otherwise, it's up to you to load that file into
    *                        a variable.
    * @param string $format  Must be a valid PlantUml format: `png`, `svg`, `eps`, `txt`, ...
-   * @throws \Jawira\PlantUmlToImage\PlantUmlException
    */
   public function convertTo(string $diagram, string $format): string
   {
     $plantUml = $this->findPlantUml();
-    $command = array_merge($plantUml, self::PLANTUML_OPTIONS, ["-t$format"]);
+    $command = array_merge($plantUml, self::PLANTUML_OPTIONS, ["-t{$format}"]);
+
     /** @psalm-suppress RiskyTruthyFalsyComparison */
     $PLANTUML_LIMIT_SIZE = getenv('PLANTUML_LIMIT_SIZE') ?: self::PLANTUML_LIMIT_SIZE;
 
@@ -70,7 +75,6 @@ class PlantUml
    * Returns PlantUml Jar or Executable, if not found `plantuml` is returned by default.
    *
    * @return string[]
-   * @throws \Jawira\PlantUmlToImage\PlantUmlException
    */
   protected function findPlantUml(): array
   {
@@ -93,7 +97,11 @@ class PlantUml
    * Jar provided by used has priority and is returned immediately without
    * verification. `null` is returned if jar is not found.
    *
+   * You can use jawira/plantuml to install PlantUML, nevertheless Graphviz is
+   * required.
+   *
    * @see https://github.com/jawira/plantuml
+   *
    * @return null|string[]
    */
   protected function findJar(): ?array
@@ -108,8 +116,8 @@ class PlantUml
     }
 
     // Jar provided by `jawira/plantuml`
-    for ($i = 1; $i <= 10; $i++) {
-      $candidate = dirname(__FILE__, $i) . DIRECTORY_SEPARATOR . 'vendor/jawira/plantuml/bin/plantuml.jar';
+    for ($i = 1; $i <= 10; ++$i) {
+      $candidate = dirname(__FILE__, $i).DIRECTORY_SEPARATOR.'vendor/jawira/plantuml/bin/plantuml.jar';
       if (is_file($candidate)) {
         $command[] = $candidate;
 

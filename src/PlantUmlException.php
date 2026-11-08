@@ -4,6 +4,8 @@ namespace Jawira\PlantUmlToImage;
 
 use Exception;
 
-class PlantUmlException extends Exception
-{
-}
+/**
+ * @author Jawira Portugal <dev@tugal.be>
+ * @copyright © 2022-2026 Jawira Portugal
+ */
+class PlantUmlException extends Exception {}
